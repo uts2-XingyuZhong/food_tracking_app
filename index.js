@@ -63,7 +63,7 @@ app.get("/", async (req, res) => {
       }
     }
 
-    // 🔥 残り日数が少ない順にソート
+    //  残り日数が少ない順にソート
     shownIngredients.sort(
       (a, b) => a.expiration_day - b.expiration_day
     );
@@ -91,3 +91,5 @@ app.get("/", async (req, res) => {
 app.listen(port, "0.0.0.0", () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+
+//Edamam
