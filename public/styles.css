@@ -52,13 +52,32 @@ body {
   padding: 4px;
 }
 
-.icon-menu,
+.icon-menu {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 14px;
+}
+
+.icon-menu::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background-color: #0b6168;
+  border-radius: 2px;
+  box-shadow: 0 6px 0 #0b6168, 0 12px 0 #0b6168;
+}
+
 .icon-bell {
+  position: relative;
   display: inline-block;
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  border: 1px solid #0b6168;
+  border: 1.5px solid #0b6168;
 }
 
 .content {
@@ -122,8 +141,8 @@ body {
 }
 
 .circle-button {
-  width: 28px;
-  height: 28px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
   border: 2px solid #0b6168;
   display: flex;
@@ -131,7 +150,7 @@ body {
   justify-content: center;
   background-color: #ffffff;
   color: #0b6168;
-  font-size: 16px;
+  font-size: 23px;
   cursor: pointer;
 }
 
@@ -148,8 +167,14 @@ body {
   padding: 10px 12px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
   background-color: #ffffff;
+}
+
+.storage-item-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .storage-item.empty {
@@ -178,9 +203,10 @@ body {
 }
 
 .item-expiry {
-  font-size: 11px;
+  font-size: 12px;
   color: #ad4b3f;
-  margin-top: 2px;
+  margin-left: 12px;
+  white-space: nowrap;
 }
 
 .bottom-nav {
