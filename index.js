@@ -166,6 +166,18 @@ app.post("/add", async (req, res) => {
   }
 });
 
+app.post("/ingredient/:id/delete", async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    await db.query("DELETE FROM added_ingredients WHERE id = $1", [id]);
+    res.redirect("/");
+  } catch (err) {
+    console.error("Error deleting ingredient", err);
+    res.status(500).send("Error deleting ingredient");
+  }
+});
+
 app.listen(port, "0.0.0.0", () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

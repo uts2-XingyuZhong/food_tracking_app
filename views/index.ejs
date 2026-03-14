@@ -21,14 +21,21 @@
           <div class="year"><%= dateInfo.year %></div>
         </section>
 
-        <section class="storage-section">
+        <section class="storage-section" id="storageSection">
           <div class="storage-header">
             <h2>Storage</h2>
             <div class="storage-actions">
               <form action="/add" method="post">
                 <button class="circle-button" title="Add item" type="submit">+</button>
               </form>
-              <button class="circle-button" title="Edit items">✎</button>
+              <button class="circle-button" id="editItemsBtn" title="Edit items" type="button">
+                <span class="edit-icon-pencil">✎</span>
+                <span class="edit-icon-check">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
+                  </svg>
+                </span>
+              </button>
             </div>
           </div>
 
@@ -40,26 +47,35 @@
             <% } %>
 
             <% ingredients.forEach(function (item) { %>
-            <a href="/ingredient/<%= item.id %>" class="storage-item-link">
-            <div class="storage-item">
-              <div class="storage-item-main">
-                <div class="item-icon">
-                  <%= item.icon %>
-                </div>
-                <div class="item-info">
-                  <div class="item-name"><%= item.name %></div>
-                  <% if (item.quantity) { %>
-                  <div class="item-quantity">quantity: <%= item.quantity %></div>
+            <div class="storage-item-row">
+              <form class="delete-btn-form" action="/ingredient/<%= item.id %>/delete" method="post">
+                <button type="submit" class="delete-btn" aria-label="delete">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-dash-circle-fill" viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z"/>
+                  </svg>
+                </button>
+              </form>
+              <a href="/ingredient/<%= item.id %>" class="storage-item-link">
+                <div class="storage-item">
+                  <div class="storage-item-main">
+                    <div class="item-icon">
+                      <%= item.icon %>
+                    </div>
+                    <div class="item-info">
+                      <div class="item-name"><%= item.name %></div>
+                      <% if (item.quantity) { %>
+                      <div class="item-quantity">quantity: <%= item.quantity %></div>
+                      <% } %>
+                    </div>
+                  </div>
+                  <% if (item.expiration_day) { %>
+                  <div class="item-expiry">
+                    <%=item.expiration_day%> days left
+                  </div>
                   <% } %>
                 </div>
-              </div>
-              <% if (item.expiration_day) { %>
-              <div class="item-expiry">
-                <%=item.expiration_day%> days left
-              </div>
-              <% } %>
+              </a>
             </div>
-            </a>
             <% }); %>
           </div>
         </section>
@@ -67,6 +83,33 @@
 
       <%- include("bottom_icons.ejs")%>
     </div>
+    <script>
+      (function () {
+        var storageSection = document.getElementById("storageSection");
+        document.getElementById("editItemsBtn").addEventListener("click", function () {
+          storageSection.classList.toggle("edit-mode");
+        });
+
+        storageSection.addEventListener("submit", function (e) {
+          var form = e.target;
+          if (!form.classList.contains("delete-btn-form")) return;
+          e.preventDefault();
+          var row = form.closest(".storage-item-row");
+          fetch(form.action, { method: "POST" }).then(function (res) {
+            if (res.ok) {
+              row.remove();
+              var list = storageSection.querySelector(".storage-list");
+              if (list.querySelectorAll(".storage-item-row").length === 0) {
+                var empty = document.createElement("div");
+                empty.className = "storage-item empty";
+                empty.innerHTML = "<span>No ingredients in storage.</span>";
+                list.appendChild(empty);
+              }
+            }
+          });
+        });
+      })();
+    </script>
   </body>
 </html>
 

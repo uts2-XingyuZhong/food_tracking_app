@@ -163,10 +163,58 @@ body {
   gap: 8px;
 }
 
+.storage-item-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.delete-btn-form {
+  display: none;
+  flex-shrink: 0;
+}
+
+.storage-section.edit-mode .delete-btn-form {
+  display: flex;
+  align-items: center;
+}
+
+#editItemsBtn .edit-icon-pencil {
+  display: inline;
+}
+
+#editItemsBtn .edit-icon-check {
+  display: none;
+}
+
+.storage-section.edit-mode #editItemsBtn .edit-icon-pencil {
+  display: none;
+}
+
+.storage-section.edit-mode #editItemsBtn .edit-icon-check {
+  display: inline;
+}
+
+.storage-section.edit-mode .storage-item-link {
+  pointer-events: none;
+}
+
+.delete-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  color: #dc3545;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .storage-item {
   border: 1px solid #c5dde0;
   border-radius: 10px;
   padding: 10px 12px;
+  min-height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -360,6 +408,8 @@ body {
   color: inherit;
   display: block;
   cursor: pointer;
+  flex: 1;
+  min-width: 0;
 }
 
 .ingredient-detail-content {
