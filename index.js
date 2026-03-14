@@ -89,7 +89,60 @@ app.get("/", async (req, res) => {
   }
 });
 
+// 食材詳細ページ
+app.get("/ingredient/:id", async (req, res) => {
+  const id = req.params.id;
 
+  try {
+    const addedResult = await db.query(
+      "SELECT id, name, quantity, added_date FROM added_ingredients WHERE id = $1",
+      [id]
+    );
+
+    if (addedResult.rows.length === 0) {
+      return res.status(404).send("Ingredient not found");
+    }
+
+    const added = addedResult.rows[0];
+    const listResult = await db.query(
+      "SELECT duration, icon FROM ingredients_list WHERE LOWER(name) = LOWER($1)",
+      [added.name]
+    );
+
+    let icon = "🍎";
+    let duration = 0;
+    if (listResult.rows.length > 0) {
+      icon = listResult.rows[0].icon;
+      duration = listResult.rows[0].duration || 0;
+    }
+
+    const addedDate = new Date(added.added_date);
+    const bestBefore = new Date(addedDate);
+    bestBefore.setDate(bestBefore.getDate() + duration);
+
+    const ingredient = {
+      id: added.id,
+      name: added.name,
+      quantity: added.quantity,
+      icon: icon,
+      dateAdded: addedDate.toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      }),
+      bestBefore: bestBefore.toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      }),
+    };
+
+    res.render("ingredient_detail.ejs", { ingredient });
+  } catch (err) {
+    console.error("Error fetching ingredient detail", err);
+    res.status(500).send("Error loading ingredient");
+  }
+});
 
 app.post("/add", async (req, res) => {
   const { ingredientName, quantity } = req.body;

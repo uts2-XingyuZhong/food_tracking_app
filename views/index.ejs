@@ -40,6 +40,7 @@
             <% } %>
 
             <% ingredients.forEach(function (item) { %>
+            <a href="/ingredient/<%= item.id %>" class="storage-item-link">
             <div class="storage-item">
               <div class="storage-item-main">
                 <div class="item-icon">
@@ -58,6 +59,7 @@
               </div>
               <% } %>
             </div>
+            </a>
             <% }); %>
           </div>
         </section>

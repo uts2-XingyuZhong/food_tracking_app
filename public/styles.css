@@ -20,7 +20,8 @@ body {
 .app-frame {
   width: 360px;
   max-width: 100%;
-  min-height: 640px;
+  height: 640px;
+  max-height: 90vh;
   border: 4px solid #0b6168;
   border-radius: 16px;
   background-color: #ffffff;
@@ -82,6 +83,7 @@ body {
 
 .content {
   flex: 1;
+  min-height: 0;
   padding: 16px 18px 8px;
   overflow-y: auto;
 }
@@ -226,6 +228,10 @@ body {
   font-size: 20px;
 }
 
+.bottom-nav a.nav-button {
+  text-decoration: none;
+}
+
 .nav-button-primary {
   width: 56px;
   height: 56px;
@@ -345,6 +351,103 @@ body {
   background: none;
   font-size: 22px;
   color: #0b6168;
+  cursor: pointer;
+}
+
+/* Ingredient detail page */
+.storage-item-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  cursor: pointer;
+}
+
+.ingredient-detail-content {
+  padding: 16px 18px 20px;
+}
+
+.breadcrumbs {
+  font-size: 12px;
+  color: #3c5558;
+  margin-bottom: 20px;
+}
+
+.breadcrumbs a {
+  color: #0b6168;
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb-sep {
+  margin: 0 6px;
+}
+
+.breadcrumb-current {
+  color: #123b40;
+}
+
+.ingredient-overview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.ingredient-overview-icon {
+  font-size: 48px;
+}
+
+.ingredient-detail-name {
+  flex: 1;
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+}
+
+.edit-icon {
+  padding: 4px;
+}
+
+.ingredient-details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.detail-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail-label {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #3c5558;
+}
+
+.detail-value {
+  font-size: 16px;
+  margin: 0;
+}
+
+.suggest-recipes-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.suggest-recipes-btn {
+  padding: 12px 32px;
+  border-radius: 8px;
+  border: none;
+  background-color: #b9e938;
+  color: #123b40;
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
   cursor: pointer;
 }
 
