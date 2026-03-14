@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Ingredient - Pantry Pal</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Nunito:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="app-frame">
+      <header class="top-bar">
+        <h1 class="add-ingredient-title">Add Ingredient</h1>
+        <form action="/" method="get">
+          <button class="close-button" type="submit" aria-label="close">
+            ✕
+          </button>
+        </form>
+      </header>
+
+      <main class="content add-ingredient-content">
+        <form class="add-ingredient-form" action="/add" method="post">
+          <div class="form-group">
+            <label class="form-label heading" for="ingredientName"
+              >Ingredient Name</label
+            >
+            <div class="ingredient-name-row">
+              <input
+                id="ingredientName"
+                name="ingredientName"
+                type="text"
+                class="text-input"
+                required
+              />
+              <div class="emoji-preview">🍎</div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half">
+              <label class="form-label small-heading" for="quantity">Qty.</label>
+              <input
+                id="quantity"
+                name="quantity"
+                type="number"
+                min="0"
+                step="1"
+                class="text-input"
+              />
+            </div>
+            <div class="form-group half">
+              <label class="form-label small-heading" for="unit">Unit</label>
+              <input
+                id="unit"
+                name="unit"
+                type="text"
+                class="text-input"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <span class="form-label small-heading">Expiry Date</span>
+            <div class="expiry-row">
+              <input
+                type="number"
+                name="expiryYear"
+                min="0"
+                class="text-input small"
+                placeholder="YYYY"
+              />
+              <input
+                type="number"
+                name="expiryMonth"
+                min="1"
+                max="12"
+                class="text-input small"
+                placeholder="MM"
+              />
+              <input
+                type="number"
+                name="expiryDay"
+                min="1"
+                max="31"
+                class="text-input small"
+                placeholder="DD"
+              />
+            </div>
+          </div>
+
+          <div class="submit-row">
+            <button class="submit-button" type="submit">Submit</button>
+          </div>
+        </form>
+      </main>
+    </div>
+  </body>
+</html>
+

@@ -5,7 +5,7 @@ To access it from another device on the same Wi-Fi network, follow the steps bel
 
 ---
 
-## 1️⃣ Find Your Local IP Address
+## ① Find Your Local IP Address
 
 Open **Terminal** and run:
 
@@ -13,7 +13,7 @@ Open **Terminal** and run:
 ipconfig getifaddr en0
 ```
 
-On another device connected to the same Wi-Fi network, open a browser and enter:
+## ② On another device connected to the same Wi-Fi network, open a browser and enter:
 
 
 ```bash

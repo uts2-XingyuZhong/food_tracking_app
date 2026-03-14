@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // 食材一覧取得
 async function getIngredients() {
   const result = await db.query(
-    "SELECT name, quantity, added_date FROM added_ingredients"
+    "SELECT * FROM added_ingredients"
   );
   return result.rows;
 }
@@ -38,12 +38,12 @@ app.get("/", async (req, res) => {
     for (const item of addedIngredients) {
       // ingredients_list から一致する食材を取得
       const result = await db.query(
-        "SELECT expiration_date, icon FROM ingredients_list WHERE LOWER(name) = LOWER($1)",
+        "SELECT duration, icon FROM ingredients_list WHERE LOWER(name) = LOWER($1)",
         [item.name]
       );
 
       if (result.rows.length > 0) {
-        const { expiration_date, icon } = result.rows[0];
+        const { duration, icon } = result.rows[0];
 
         const today = new Date();
         const addedDate = new Date(item.added_date);
@@ -52,9 +52,10 @@ app.get("/", async (req, res) => {
         const diffTime = today - addedDate;
         const daysPassed = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-        const remainingDays = expiration_date - daysPassed;
+        const remainingDays = duration - daysPassed;
 
         shownIngredients.push({
+          id:item.id,
           name: item.name,
           quantity: item.quantity,
           expiration_day: remainingDays,
@@ -85,6 +86,30 @@ app.get("/", async (req, res) => {
   } catch (err) {
     console.error("Error fetching ingredients", err);
     res.status(500).send("Error fetching ingredients from database");
+  }
+});
+
+
+
+app.post("/add", async (req, res) => {
+  const { ingredientName, quantity } = req.body;
+
+  try {
+    // ホーム画面からの遷移（まだフォーム未入力）の場合は入力画面を表示
+    if (!ingredientName) {
+      return res.render("add_ingredient.ejs");
+    }
+
+    // フォーム送信時はDBに追加してトップへ戻る
+    await db.query(
+      "INSERT INTO added_ingredients (name, quantity, added_date) VALUES ($1, $2, NOW())",
+      [ingredientName, quantity || null]
+    );
+
+    res.redirect("/");
+  } catch (err) {
+    console.error("Error adding ingredient", err);
+    res.status(500).send("Error adding ingredient");
   }
 });
 

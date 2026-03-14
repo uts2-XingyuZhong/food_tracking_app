@@ -243,3 +243,108 @@ body {
   font-size: 22px;
 }
 
+/* Add Ingredient screen */
+.add-ingredient-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+}
+
+.add-ingredient-content {
+  padding: 20px 22px 16px;
+}
+
+.add-ingredient-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+}
+
+.form-group.half {
+  flex: 1;
+}
+
+.form-label {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.form-label.heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  text-transform: none;
+}
+
+.small-heading {
+  font-size: 11px;
+}
+
+.text-input {
+  border: 1.5px solid #0b6168;
+  padding: 8px 10px;
+  border-radius: 2px;
+  font-size: 14px;
+}
+
+.text-input.small {
+  width: 70px;
+}
+
+.ingredient-name-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.emoji-preview {
+  width: 44px;
+  height: 44px;
+  border: 1.5px solid #0b6168;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.expiry-row {
+  display: flex;
+  gap: 8px;
+}
+
+.submit-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.submit-button {
+  padding: 10px 26px;
+  border-radius: 6px;
+  border: none;
+  background-color: #b9e938;
+  color: #123b40;
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.close-button {
+  border: none;
+  background: none;
+  font-size: 22px;
+  color: #0b6168;
+  cursor: pointer;
+}
+
