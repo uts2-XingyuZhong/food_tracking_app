@@ -49,22 +49,16 @@
             <% ingredients.forEach(function (item) { %>
             <div class="storage-item">
               <div class="item-icon">
-                <% if (item.category === 'fruit') { %> 🍎 <% } else if
-                (item.category === 'dairy') { %> 🥛 <% } else if
-                (item.category === 'vegetable') { %> 🥦 <% } else { %> 🧺 <% } %>
+                <%= item.icon %>
               </div>
               <div class="item-info">
                 <div class="item-name"><%= item.name %></div>
                 <% if (item.quantity) { %>
-                <div class="item-quantity"><%= item.quantity %></div>
+                <div class="item-quantity">quantity: <%= item.quantity %></div>
                 <% } %>
-                <% if (item.added_date) { %>
+                <% if (item.expiration_day) { %>
                 <div class="item-expiry">
-                  Expires:
-                  <%= new Date(item.added_date).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                  }) %>
+                  <%=item.expiration_day%> days left
                 </div>
                 <% } %>
               </div>
