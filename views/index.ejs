@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pantry Pal</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Nunito:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="app-frame">
+      <header class="top-bar">
+        <button class="icon-button">
+          <span class="icon-menu"></span>
+        </button>
+        <div class="app-title">Pantry Pal</div>
+        <button class="icon-button">
+          <span class="icon-bell"></span>
+        </button>
+      </header>
+
+      <main class="content">
+        <section class="date-card">
+          <div class="weekday"><%= dateInfo.weekday %></div>
+          <div class="month-day"><%= dateInfo.monthDay %></div>
+          <div class="year"><%= dateInfo.year %></div>
+        </section>
+
+
+        <section class="storage-section">
+          <div class="storage-header">
+            <h2>Storage</h2>
+            <div class="storage-actions">
+              <button class="circle-button" title="Add item">+</button>
+              <button class="circle-button" title="Edit items">✎</button>
+            </div>
+          </div>
+
+          <div class="storage-list">
+            <% if (ingredients.length === 0) { %>
+            <div class="storage-item empty">
+              <span>No ingredients in storage.</span>
+            </div>
+            <% } %>
+
+            <% ingredients.forEach(function (item) { %>
+            <div class="storage-item">
+              <div class="item-icon">
+                <% if (item.category === 'fruit') { %> 🍎 <% } else if
+                (item.category === 'dairy') { %> 🥛 <% } else if
+                (item.category === 'vegetable') { %> 🥦 <% } else { %> 🧺 <% } %>
+              </div>
+              <div class="item-info">
+                <div class="item-name"><%= item.name %></div>
+                <% if (item.quantity) { %>
+                <div class="item-quantity"><%= item.quantity %></div>
+                <% } %>
+                <% if (item.added_date) { %>
+                <div class="item-expiry">
+                  Expires:
+                  <%= new Date(item.added_date).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                  }) %>
+                </div>
+                <% } %>
+              </div>
+            </div>
+            <% }); %>
+          </div>
+        </section>
+      </main>
+
+      <nav class="bottom-nav">
+        <button class="nav-button">
+          <span class="nav-icon">⌂</span>
+        </button>
+        <button class="nav-button">
+          <span class="nav-icon">🔍</span>
+        </button>
+        <button class="nav-button nav-button-primary">
+          <span class="nav-icon">📷</span>
+        </button>
+        <button class="nav-button">
+          <span class="nav-icon">📖</span>
+        </button>
+        <button class="nav-button">
+          <span class="nav-icon">👤</span>
+        </button>
+      </nav>
+    </div>
+  </body>
+</html>
+

@@ -1,0 +1,219 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
+  background-color: #f5fafb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: #123b40;
+}
+
+.app-frame {
+  width: 360px;
+  max-width: 100%;
+  min-height: 640px;
+  border: 4px solid #0b6168;
+  border-radius: 16px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #d3e6e8;
+}
+
+.app-title {
+  font-family: 'Playfair Display', serif;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 16px;
+}
+
+.icon-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #0b6168;
+  padding: 4px;
+}
+
+.icon-menu,
+.icon-bell {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid #0b6168;
+}
+
+.content {
+  flex: 1;
+  padding: 16px 18px 8px;
+  overflow-y: auto;
+}
+
+.date-card {
+  background-color: #a9e4f4;
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin-bottom: 8px;
+  color: #123b40;
+}
+
+.weekday {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.month-day {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+}
+
+.year {
+  margin-top: 4px;
+  font-size: 12px;
+  text-align: right;
+}
+
+.expiring-text {
+  font-size: 13px;
+  margin: 6px 4px 16px;
+}
+
+.storage-section {
+  margin-top: 4px;
+}
+
+.storage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.storage-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.storage-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.circle-button {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #0b6168;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  color: #0b6168;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.storage-list {
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.storage-item {
+  border: 1px solid #c5dde0;
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #ffffff;
+}
+
+.storage-item.empty {
+  justify-content: center;
+  color: #7b9497;
+}
+
+.item-icon {
+  font-size: 26px;
+}
+
+.item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.item-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+}
+
+.item-quantity {
+  font-size: 12px;
+  color: #3c5558;
+}
+
+.item-expiry {
+  font-size: 11px;
+  color: #ad4b3f;
+  margin-top: 2px;
+}
+
+.bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 0 10px;
+  border-top: 1px solid #d3e6e8;
+  background-color: #ffffff;
+}
+
+.nav-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #0b6168;
+  font-size: 20px;
+}
+
+.nav-button-primary {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #0b949e;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -22px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.nav-icon {
+  font-size: 22px;
+}
+
