@@ -106,7 +106,7 @@ app.get("/ingredient/:id", async (req, res) => {
 
     const added = addedResult.rows[0];
     const listResult = await db.query(
-      "SELECT duration, icon FROM ingredients_list WHERE LOWER(name) = LOWER($1)",
+      "SELECT duration, icon FROM ingredients_list WHERE LOWER(name) LIKE '%'||LOWER($1)||'%'",
       [added.name]
     );
 
@@ -168,7 +168,7 @@ app.post("/ingredient/:id/recipes", async (req, res) => {
     // ② icon取得
     // -----------------------------------
     const listResult = await db.query(
-      "SELECT icon FROM ingredients_list WHERE LOWER(name) = LOWER($1)",
+      "SELECT icon FROM ingredients_list WHERE LOWER(name) LIKE '%'||LOWER($1)||'%'",
       [added.name]
     );
 
