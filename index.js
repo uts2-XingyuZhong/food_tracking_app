@@ -150,6 +150,9 @@ app.post("/ingredient/:id/recipes", async (req, res) => {
   const id = req.params.id;
 
   try {
+    // -----------------------------------
+    // ① 選択された材料を取得
+    // -----------------------------------
     const addedResult = await db.query(
       "SELECT id, name, quantity, added_date FROM added_ingredients WHERE id = $1",
       [id]
@@ -161,32 +164,27 @@ app.post("/ingredient/:id/recipes", async (req, res) => {
 
     const added = addedResult.rows[0];
 
-    // 🔥 icon取得（GETと同じ方法）
+    // -----------------------------------
+    // ② icon取得
+    // -----------------------------------
     const listResult = await db.query(
       "SELECT icon FROM ingredients_list WHERE LOWER(name) = LOWER($1)",
       [added.name]
     );
 
-    let icon = "🍎"; // デフォルト
+    let icon = "🍎";
 
     if (listResult.rows.length > 0) {
       icon = listResult.rows[0].icon || "🍎";
     }
 
-    // 現在のストレージにある食材名を取得
-    const allIngredients = await getIngredients();
-
-    const uniqueNames = [
-      ...new Set(
-        allIngredients
-          .map((row) => row.name)
-          .filter((name) => typeof name === "string" && name.trim() !== "")
-      ),
-    ];
-
-    const ingredientsParam = uniqueNames.join(",");
+    // -----------------------------------
+    // ③ ★ここが重要：idの材料だけ使う
+    // -----------------------------------
+    const ingredientsParam = added.name;
 
     const apiKey = process.env.SPOONACULAR_API_KEY;
+
     if (!apiKey) {
       console.error("SPOONACULAR_API_KEY is not set in .env");
       return res
@@ -194,31 +192,36 @@ app.post("/ingredient/:id/recipes", async (req, res) => {
         .send("Spoonacular API key is not configured on the server.");
     }
 
+    // -----------------------------------
+    // ④ レシピ検索（この材料のみ）
+    // -----------------------------------
     const response = await axios.get(
       "https://api.spoonacular.com/recipes/findByIngredients",
       {
         params: {
           apiKey: apiKey,
-          ingredients: ingredientsParam,
+          ingredients: ingredientsParam, // ← 1つだけ
           number: 10,
           ranking: 1,
-          ignorePantry: true,
+          ignorePantry: false,
         },
       }
     );
 
     let recipes = Array.isArray(response.data) ? response.data : [];
 
+    // -----------------------------------
+    // ⑤ ソート（念のため）
+    // -----------------------------------
     recipes.sort((a, b) => {
       const usedA = a.usedIngredientCount || 0;
       const usedB = b.usedIngredientCount || 0;
-      if (usedB !== usedA) return usedB - usedA;
-
-      const missedA = a.missedIngredientCount || 0;
-      const missedB = b.missedIngredientCount || 0;
-      return missedA - missedB;
+      return usedB - usedA;
     });
 
+    // -----------------------------------
+    // ⑥ 表示用データ
+    // -----------------------------------
     const simplifiedRecipes = recipes.map((r) => ({
       id: r.id,
       title: r.title,
@@ -228,12 +231,11 @@ app.post("/ingredient/:id/recipes", async (req, res) => {
         (r.missedIngredientCount || 0),
     }));
 
-    // ✅ ingredientにicon追加
     const ingredient = {
       id: added.id,
       name: added.name,
       quantity: added.quantity,
-      icon: icon, // ← 追加
+      icon: icon,
     };
 
     res.render("suggested_recipes.ejs", {
