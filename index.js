@@ -178,31 +178,23 @@ app.post("/ingredient/:id/recipes", async (req, res) => {
       icon = listResult.rows[0].icon || "🍎";
     }
 
-    // -----------------------------------
-    // ③ ★ここが重要：idの材料だけ使う
-    // -----------------------------------
-    const ingredientsParam = added.name;
-
     const apiKey = process.env.SPOONACULAR_API_KEY;
 
     if (!apiKey) {
-      console.error("SPOONACULAR_API_KEY is not set in .env");
-      return res
-        .status(500)
-        .send("Spoonacular API key is not configured on the server.");
+      return res.status(500).send("API key not configured.");
     }
 
     // -----------------------------------
-    // ④ レシピ検索（この材料のみ）
+    // ③ 選択食材を必ず含める
     // -----------------------------------
     const response = await axios.get(
       "https://api.spoonacular.com/recipes/findByIngredients",
       {
         params: {
           apiKey: apiKey,
-          ingredients: ingredientsParam, // ← 1つだけ
-          number: 10,
-          ranking: 1,
+          ingredients: added.name,
+          number: 20,
+          ranking: 2, // ← 不足食材最小化優先
           ignorePantry: false,
         },
       }
@@ -211,24 +203,36 @@ app.post("/ingredient/:id/recipes", async (req, res) => {
     let recipes = Array.isArray(response.data) ? response.data : [];
 
     // -----------------------------------
-    // ⑤ ソート（念のため）
+    // ④ 「選択食材を含む」ものだけに限定
+    // -----------------------------------
+    recipes = recipes.filter(
+      (r) => (r.usedIngredientCount || 0) > 0
+    );
+
+    // -----------------------------------
+    // ⑤ 追加購入数でソート
+    //    (= missedIngredientCount 昇順)
     // -----------------------------------
     recipes.sort((a, b) => {
-      const usedA = a.usedIngredientCount || 0;
-      const usedB = b.usedIngredientCount || 0;
-      return usedB - usedA;
+      const missedA = a.missedIngredientCount || 0;
+      const missedB = b.missedIngredientCount || 0;
+
+      if (missedA !== missedB) {
+        return missedA - missedB; // 少ない順
+      }
+
+      // 同じ場合は使用食材が多い順
+      return (b.usedIngredientCount || 0) - (a.usedIngredientCount || 0);
     });
 
     // -----------------------------------
-    // ⑥ 表示用データ
+    // ⑥ 表示用データ作成
     // -----------------------------------
     const simplifiedRecipes = recipes.map((r) => ({
       id: r.id,
       title: r.title,
       image: r.image,
-      ingredientsCount:
-        (r.usedIngredientCount || 0) +
-        (r.missedIngredientCount || 0),
+      ingredientsCount: r.missedIngredientCount || 0, // 🔥 追加購入数
     }));
 
     const ingredient = {
