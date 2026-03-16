@@ -4,6 +4,7 @@ dotenv.config();
 import express from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
+import axios from "axios";
 
 const app = express();
 const port = 3000;
@@ -141,6 +142,108 @@ app.get("/ingredient/:id", async (req, res) => {
   } catch (err) {
     console.error("Error fetching ingredient detail", err);
     res.status(500).send("Error loading ingredient");
+  }
+});
+
+// レシピ提案ページ
+app.post("/ingredient/:id/recipes", async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const addedResult = await db.query(
+      "SELECT id, name, quantity, added_date FROM added_ingredients WHERE id = $1",
+      [id]
+    );
+
+    if (addedResult.rows.length === 0) {
+      return res.status(404).send("Ingredient not found");
+    }
+
+    const added = addedResult.rows[0];
+
+    // 🔥 icon取得（GETと同じ方法）
+    const listResult = await db.query(
+      "SELECT icon FROM ingredients_list WHERE LOWER(name) = LOWER($1)",
+      [added.name]
+    );
+
+    let icon = "🍎"; // デフォルト
+
+    if (listResult.rows.length > 0) {
+      icon = listResult.rows[0].icon || "🍎";
+    }
+
+    // 現在のストレージにある食材名を取得
+    const allIngredients = await getIngredients();
+
+    const uniqueNames = [
+      ...new Set(
+        allIngredients
+          .map((row) => row.name)
+          .filter((name) => typeof name === "string" && name.trim() !== "")
+      ),
+    ];
+
+    const ingredientsParam = uniqueNames.join(",");
+
+    const apiKey = process.env.SPOONACULAR_API_KEY;
+    if (!apiKey) {
+      console.error("SPOONACULAR_API_KEY is not set in .env");
+      return res
+        .status(500)
+        .send("Spoonacular API key is not configured on the server.");
+    }
+
+    const response = await axios.get(
+      "https://api.spoonacular.com/recipes/findByIngredients",
+      {
+        params: {
+          apiKey: apiKey,
+          ingredients: ingredientsParam,
+          number: 10,
+          ranking: 1,
+          ignorePantry: true,
+        },
+      }
+    );
+
+    let recipes = Array.isArray(response.data) ? response.data : [];
+
+    recipes.sort((a, b) => {
+      const usedA = a.usedIngredientCount || 0;
+      const usedB = b.usedIngredientCount || 0;
+      if (usedB !== usedA) return usedB - usedA;
+
+      const missedA = a.missedIngredientCount || 0;
+      const missedB = b.missedIngredientCount || 0;
+      return missedA - missedB;
+    });
+
+    const simplifiedRecipes = recipes.map((r) => ({
+      id: r.id,
+      title: r.title,
+      image: r.image,
+      ingredientsCount:
+        (r.usedIngredientCount || 0) +
+        (r.missedIngredientCount || 0),
+    }));
+
+    // ✅ ingredientにicon追加
+    const ingredient = {
+      id: added.id,
+      name: added.name,
+      quantity: added.quantity,
+      icon: icon, // ← 追加
+    };
+
+    res.render("suggested_recipes.ejs", {
+      ingredient,
+      recipes: simplifiedRecipes,
+    });
+
+  } catch (err) {
+    console.error("Error fetching suggested recipes", err);
+    res.status(500).send("Error loading recipes");
   }
 });
 

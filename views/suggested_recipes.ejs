@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Suggested Recipes - <%= ingredient.name %></title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Nunito:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="app-frame">
+      <%- include("header.ejs") %>
+
+      <main class="content suggested-content">
+        <nav class="breadcrumbs">
+          <span>Search &gt; Suggested</span>
+        </nav>
+
+        <section class="suggested-header-row">
+          <div class="suggested-ingredient">
+            <div class="suggested-ingredient-icon"><%= ingredient.icon %></div>
+            <h1 class="suggested-ingredient-name"><%= ingredient.name %></h1>
+          </div>
+          <div class="suggested-actions">
+            <button class="icon-button" aria-label="filter">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+                <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .39.812L10 7.5V13a1 1 0 0 1-1.447.894l-2-1A1 1 0 0 1 6 12V7.5L1.61 1.812A.5.5 0 0 1 1.5 1.5"/>
+              </svg>
+            </button>
+            <button class="icon-button" aria-label="sort">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-filter-square" viewBox="0 0 16 16">
+                <path d="M3 4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .39.812L10 10v3.5a.5.5 0 0 1-.79.407l-2-1.5A.5.5 0 0 1 7 12.5V10L3.11 4.812A.5.5 0 0 1 3 4"/>
+                <path d="M14 2H2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2z"/>
+              </svg>
+            </button>
+          </div>
+        </section>
+
+        <section class="recipes-list">
+          <% if (!recipes || recipes.length === 0) { %>
+          <p class="recipes-empty">No recipes found for your ingredients.</p>
+          <% } else { %>
+          <% recipes.forEach(function (recipe) { %>
+          <article class="recipe-card">
+            <div class="recipe-thumb-wrap">
+              <% if (recipe.image) { %>
+              <img src="<%= recipe.image %>" alt="<%= recipe.title %>" class="recipe-thumb" />
+              <% } else { %>
+              <div class="recipe-thumb placeholder"></div>
+              <% } %>
+            </div>
+            <div class="recipe-main">
+              <h2 class="recipe-title"><%= recipe.title %></h2>
+              <div class="recipe-meta">
+                <span class="recipe-ingredients-count"><%= recipe.ingredientsCount %></span>
+                <span class="recipe-ingredients-label">INGREDIENTS</span>
+              </div>
+            </div>
+          </article>
+          <% }); %>
+          <% } %>
+        </section>
+      </main>
+
+      <%- include("bottom_icons.ejs") %>
+    </div>
+  </body>
+</html>
+
