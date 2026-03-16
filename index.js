@@ -38,7 +38,7 @@ app.get("/", async (req, res) => {
     for (const item of addedIngredients) {
       // ingredients_list から一致する食材を取得
       const result = await db.query(
-        "SELECT duration, icon FROM ingredients_list WHERE LOWER(name) = LOWER($1)",
+        "SELECT duration, icon FROM ingredients_list WHERE LOWER(name) LIKE '%'||LOWER($1)||'%'",
         [item.name]
       );
 
