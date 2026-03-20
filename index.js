@@ -320,6 +320,13 @@ app.get("/conformation",(req,res)=>{
   res.render("conformation.ejs");
 });
 
+app.post("/confirm",async(req,res)=>{
+  await db.query("INSERT INTO added_ingredients (name, quantity, added_date) VALUES ($1, $2, NOW())", ["egg", 1]);
+  await db.query("INSERT INTO added_ingredients (name, quantity, added_date) VALUES ($1, $2, NOW())", ["broccoli", 1]);
+  await db.query("INSERT INTO added_ingredients (name, quantity, added_date) VALUES ($1, $2, NOW())", ["carrots", 3]);
+  res.redirect("/");
+})
+
 app.listen(port, "0.0.0.0", () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
