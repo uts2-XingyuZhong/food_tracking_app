@@ -68,7 +68,7 @@
                       <% } %>
                     </div>
                   </div>
-                  <% if (item.expiration_day) { %>
+                  <% if (item.expiration_day>=0) { %>
                   <div class="item-expiry">
                     <%=item.expiration_day%> days left
                   </div>
