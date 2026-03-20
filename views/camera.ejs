@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Camera - Pantry Pal</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Nunito:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Simple full-screen camera UI */
+      body {
+        font-family:
+          "Nunito",
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        background-color: #f5fafb;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        color: #123b40;
+      }
+
+      .app-frame {
+        width: 360px;
+        max-width: 100%;
+        height: 640px;
+        max-height: 90vh;
+        border: 4px solid #0b6168;
+        border-radius: 16px;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      main {
+        flex: 1;
+        position: relative;
+      }
+
+      video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .controls {
+        position: absolute;
+        bottom: 1.25rem;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      /* 撮影ボタン（中央固定） */
+      #captureBtn {
+        border: none;
+        width: 65px;
+        height: 65px;
+        border-radius: 50%;
+        background: white;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+
+        transition:
+          background 0.15s ease,
+          transform 0.15s ease;
+      }
+
+      #captureBtn:active {
+        background: #ddd; /* 少し灰色になる */
+        transform: scale(0.95); /* 少し縮む */
+      }
+
+      /* 閉じるボタン */
+      .close-btn {
+        position: absolute;
+        left: -80px; /* ← ここがミソ（中央から左へ） */
+        top: 50%;
+        transform: translateY(-50%);
+
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        text-decoration: none;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 20px;
+        font-weight: bold;
+
+        backdrop-filter: blur(6px);
+      }
+
+      .status {
+        position: absolute;
+        top: 4.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.6);
+        padding: 0.5rem 1rem;
+        border-radius: 999px;
+        font-size: 0.9rem;
+        opacity: 0;
+        transition: opacity 150ms ease;
+      }
+
+      .status.visible {
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-frame">
+      <main>
+        <video id="video" autoplay playsinline></video>
+
+        <div class="controls">
+          <a href="/" class="close-btn">×</a>
+          <a href="/conformation"><button id="captureBtn"></button></a>
+        </div>
+      </main>
+    </div>
+
+    <script type="module">
+      const video = document.getElementById("video");
+      const button = document.getElementById("captureBtn");
+
+      async function initCamera() {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+          });
+          video.srcObject = stream;
+
+          // iOSや一部ブラウザ対策でミュートとplaysInline
+          video.muted = true;
+          video.playsInline = true;
+
+          await video.play();
+        } catch (error) {
+          console.error("Camera init error:", error);
+        }
+      }
+
+      button.addEventListener("click", async () => {
+        if (!video.videoWidth || !video.videoHeight) {
+          console.warn("カメラの準備ができていません");
+          return;
+        }
+
+        // 撮影用キャンバスを作成
+        const canvas = document.createElement("canvas");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(video, 0, 0);
+
+        // 画像データを取得
+        const image = canvas.toDataURL("image/png");
+
+        try {
+          await fetch("/upload", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ image }),
+          });
+
+          console.log("画像を保存しました");
+        } catch (err) {
+          console.error("Upload error:", err);
+        }
+      });
+
+      // カメラ起動
+      initCamera();
+    </script>
+  </body>
+</html>

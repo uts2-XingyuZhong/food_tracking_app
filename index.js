@@ -5,9 +5,16 @@ import express from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
 import axios from "axios";
+import fs from "fs";
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// 現在のファイル名
+const __filename = fileURLToPath(import.meta.url);
 
 const app = express();
 const port = 3000;
+const __dirname = path.dirname(__filename);
 
 const db = new pg.Client({
   user: "postgres",
@@ -285,6 +292,32 @@ app.post("/ingredient/:id/delete", async (req, res) => {
     console.error("Error deleting ingredient", err);
     res.status(500).send("Error deleting ingredient");
   }
+});
+
+app.get("/camera",(req,res)=>{
+  res.render("camera.ejs");
+});
+
+app.post("/upload", express.json({ limit: "10mb" }), (req, res) => {
+  const { image } = req.body;
+
+  const base64Data = image.replace(/^data:image\/png;base64,/, "");
+  const filePath = path.join(__dirname, "image", `capture-${Date.now()}.png`);
+
+  fs.writeFile(filePath, base64Data, "base64", (err) => {
+    if (err) {
+      console.error("Failed to save image:", err);
+      return res.status(500).json({ success: false });
+    }
+    console.log("Image saved:", filePath);
+
+    // 画像保存完了後にリダイレクト
+    res.redirect("/conformation");
+  });
+});
+
+app.get("/conformation",(req,res)=>{
+  res.render("conformation.ejs");
 });
 
 app.listen(port, "0.0.0.0", () => {

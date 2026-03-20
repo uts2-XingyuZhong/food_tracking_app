@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pantry Pal</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Nunito:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <style>
+    #confirmBtn {
+      width:120px;
+      height:40px;
+      border: 2px solid #0b6168;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;  
+    }
+  </style>
+    
+
+  <body>
+    <div class="app-frame">
+      <%- include("header.ejs")%>
+
+      <main class="content">
+        <section class="storage-section">
+          <div class="storage-header">
+            <h2>Conformation Items</h2>
+          </div>
+          <div class="storage-list">
+            <div class="storage-item">
+              <div class="storage-item-main">
+                <div class="item-icon">🥚</div>
+                <div class="item-info">
+                  <div class="item-name">Egg</div>
+                  <div class="item-quantity">1</div>
+                </div>
+              </div>
+            </div>
+            <div class="storage-item">
+              <div class="storage-item-main">
+                <div class="item-icon">🥦</div>
+                <div class="item-info">
+                  <div class="item-name">Broccoli</div>
+                  <div class="item-quantity">1</div>
+                </div>
+              </div>
+            </div>
+            <div class="storage-item">
+              <div class="storage-item-main">
+                <div class="item-icon">🥕</div>
+                <div class="item-info">
+                  <div class="item-name">Carrots</div>
+                  <div class="item-quantity">3</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div style="display: flex; justify-content: center; padding: 16px;">
+          <button class="circle-button" id="confirmBtn">Conformation</button>
+        </div>
+      </main>
+
+      <%- include("bottom_icons.ejs")%>
+    </div>
+    
+  </body>
+</html>
