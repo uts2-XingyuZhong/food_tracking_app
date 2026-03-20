@@ -1,6 +1,8 @@
 .env
 .DS_Store
 
+image/
+
 # Logs
 logs
 *.log
