@@ -157,7 +157,10 @@ app.get("/ingredient/:id", async (req, res) => {
       }),
     };
 
-    res.render("ingredient_detail.ejs", { ingredient });
+    res.render("ingredient_detail.ejs", 
+      { ingredient, 
+        expiringIngredients: []
+      });
   } catch (err) {
     console.error("Error fetching ingredient detail", err);
     res.status(500).send("Error loading ingredient");
@@ -264,6 +267,7 @@ app.post("/ingredient/:id/recipes", async (req, res) => {
     res.render("suggested_recipes.ejs", {
       ingredient,
       recipes: simplifiedRecipes,
+      expiringIngredients: []
     });
 
   } catch (err) {
@@ -330,11 +334,14 @@ app.post("/upload", express.json({ limit: "10mb" }), (req, res) => {
 
 app.get("/conformation",(req,res)=>{
   const dateInfo={
-    weekday:"Monday",
+    weekday:"When you bought",
     monthDay:"March 23",
     year:2026
   }
-  res.render("conformation.ejs", { dateInfo });
+  res.render("conformation.ejs", 
+    { dateInfo,
+      expiringIngredients: []
+    });
 });
 
 app.post("/confirm",async(req,res)=>{
