@@ -1,20 +1,92 @@
 <header class="top-bar">
-    <button class="icon-button">
-      <span class="icon-menu"></span>
-    </button>
-    <div class="app-title">Pantry Pal</div>
-    <button class="icon-button" aria-label="notifications">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
-        fill="currentColor"
-        class="bi bi-bell"
-        viewBox="0 0 16 16"
-      >
-        <path
-          d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"
-        />
-      </svg>
-    </button>
-  </header>
+  <button class="icon-button">
+    <span class="icon-menu"></span>
+  </button>
+  <div class="app-title">Pantry Pal</div>
+  <button class="icon-button notification-btn" aria-label="notifications">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      fill="currentColor"
+      class="bi bi-bell"
+      viewBox="0 0 16 16"
+    >
+      <path
+        d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"
+      />
+    </svg>
+  </button>
+  
+  <!-- Notification Popup -->
+  <div class="notification-popup" id="notificationPopup">
+    <div class="notification-content">
+      <div class="notification-header">
+        <h3 class="notification-title">NOTIFICATIONS</h3>
+        <button class="notification-close-btn" id="notificationCloseBtn" aria-label="close notifications">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+          </svg>
+        </button>
+      </div>
+      <% if (expiringIngredients && expiringIngredients.length > 0) { %>
+        <div class="notification-count"><%= expiringIngredients.length %> Item<%= expiringIngredients.length > 1 ? 's' : '' %> Expiring Soon!</div>
+        <div class="notification-list">
+          <% expiringIngredients.forEach(function (item) { %>
+            <div class="notification-item">
+              <div class="notification-item-header">
+                <span class="notification-item-icon"><%= item.icon %></span>
+                <span class="notification-item-name"><%= item.name %></span>
+                <span class="notification-item-quantity"><%= item.quantity || '' %></span>
+              </div>
+              <div class="notification-item-days">
+                <span class="days-number"><%= item.expiration_day %></span>
+                <span class="days-label">Days Remaining</span>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <div class="notification-empty">
+          <p>All items are fresh!</p>
+        </div>
+      <% } %>
+    </div>
+  </div>
+  
+  <!-- Overlay for closing popup -->
+  <div class="notification-overlay" id="notificationOverlay"></div>
+</header>
+
+<script>
+  (function () {
+    const notificationBtn = document.querySelector('.notification-btn');
+    const notificationPopup = document.getElementById('notificationPopup');
+    const notificationOverlay = document.getElementById('notificationOverlay');
+    const notificationCloseBtn = document.getElementById('notificationCloseBtn');
+
+    notificationBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      notificationPopup.classList.toggle('active');
+      notificationOverlay.classList.toggle('active');
+    });
+
+    notificationOverlay.addEventListener('click', function () {
+      notificationPopup.classList.remove('active');
+      notificationOverlay.classList.remove('active');
+    });
+
+    notificationCloseBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      notificationPopup.classList.remove('active');
+      notificationOverlay.classList.remove('active');
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.notification-btn') && !e.target.closest('.notification-popup')) {
+        notificationPopup.classList.remove('active');
+        notificationOverlay.classList.remove('active');
+      }
+    });
+  })();
+</script>

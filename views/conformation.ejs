@@ -12,16 +12,15 @@
   </head>
   <style>
     #confirmBtn {
-      width:120px;
-      height:40px;
+      width: 120px;
+      height: 40px;
       border: 2px solid #0b6168;
       padding: 12px 24px;
       font-size: 16px;
       border-radius: 10px;
-      cursor: pointer;  
+      cursor: pointer;
     }
   </style>
-    
 
   <body>
     <div class="app-frame">
@@ -30,8 +29,13 @@
       <main class="content">
         <section class="storage-section">
           <div class="storage-header">
-            <h2>Conformation Items</h2>
+            <h2>Conformation</h2>
           </div>
+          <section class="date-card">
+            <div class="weekday"><%= dateInfo.weekday %></div>
+            <div class="month-day"><%= dateInfo.monthDay %></div>
+            <div class="year"><%= dateInfo.year %></div>
+          </section>
           <div class="storage-list">
             <div class="storage-item">
               <div class="storage-item-main">
@@ -63,15 +67,16 @@
           </div>
         </section>
 
-        <div style="display: flex; justify-content: center; padding: 16px;">
+        <div style="display: flex; justify-content: center; padding: 16px">
           <form action="/confirm" method="POST">
-            <button class="circle-button" id="confirmBtn" type="submit">Conformation</button>
+            <button class="circle-button" id="confirmBtn" type="submit">
+              Conformation
+            </button>
           </form>
         </div>
       </main>
 
       <%- include("bottom_icons.ejs")%>
     </div>
-    
   </body>
 </html>

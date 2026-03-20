@@ -62,19 +62,30 @@ app.get("/", async (req, res) => {
 
         const remainingDays = duration - daysPassed;
 
+        if (remainingDays < 0) {
+          await db.query('DELETE FROM added_ingredients WHERE id = $1', [item.id]);
+          continue;
+        }
+        
         shownIngredients.push({
-          id:item.id,
-          name: item.name,
-          quantity: item.quantity,
-          expiration_day: remainingDays,
-          icon: icon,
+        id:item.id,
+        name: item.name,
+        quantity: item.quantity,
+        expiration_day: remainingDays,
+        icon: icon,
         });
+
       }
     }
 
     //  残り日数が少ない順にソート
     shownIngredients.sort(
       (a, b) => a.expiration_day - b.expiration_day
+    );
+
+    // 3日以下の食材をフィルタリング
+    const expiringIngredients = shownIngredients.filter(
+      (item) => item.expiration_day <= 3
     );
 
     const now = new Date();
@@ -90,6 +101,7 @@ app.get("/", async (req, res) => {
     res.render("index.ejs", {
       dateInfo: dateInfo,
       ingredients: shownIngredients,
+      expiringIngredients: expiringIngredients,
     });
   } catch (err) {
     console.error("Error fetching ingredients", err);
@@ -317,7 +329,12 @@ app.post("/upload", express.json({ limit: "10mb" }), (req, res) => {
 });
 
 app.get("/conformation",(req,res)=>{
-  res.render("conformation.ejs");
+  const dateInfo={
+    weekday:"Monday",
+    monthDay:"March 23",
+    year:2026
+  }
+  res.render("conformation.ejs", { dateInfo });
 });
 
 app.post("/confirm",async(req,res)=>{
