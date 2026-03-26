@@ -1,5 +1,5 @@
 <header class="top-bar">
-  <button class="icon-button">
+  <button class="icon-button menu-btn" id="menuBtn" aria-label="menu">
     <span class="icon-menu"></span>
   </button>
   <div class="app-title">Pantry Pal</div>
@@ -18,6 +18,24 @@
     </svg>
   </button>
   
+  <!-- Menu Dropdown -->
+  <div class="menu-dropdown" id="menuDropdown">
+    <nav class="menu-content">
+      <a href="/" class="menu-link">
+        <span>Home</span>
+      </a>
+      <a href="/search" class="menu-link">
+        <span>Search Recipes</span>
+      </a>
+      <a href="/profile" class="menu-link">
+        <span>Profile</span>
+      </a>
+    </nav>
+  </div>
+  
+  <!-- Overlay for closing dropdowns -->
+  <div class="menu-overlay" id="menuOverlay"></div>
+
   <!-- Notification Popup -->
   <div class="notification-popup" id="notificationPopup">
     <div class="notification-content">
@@ -60,6 +78,30 @@
 
 <script>
   (function () {
+    // Menu dropdown functionality
+    const menuBtn = document.getElementById('menuBtn');
+    const menuDropdown = document.getElementById('menuDropdown');
+    const menuOverlay = document.getElementById('menuOverlay');
+
+    menuBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      menuDropdown.classList.toggle('active');
+      menuOverlay.classList.toggle('active');
+    });
+
+    menuOverlay.addEventListener('click', function () {
+      menuDropdown.classList.remove('active');
+      menuOverlay.classList.remove('active');
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('#menuBtn') && !e.target.closest('.menu-dropdown')) {
+        menuDropdown.classList.remove('active');
+        menuOverlay.classList.remove('active');
+      }
+    });
+
+    // Notification button functionality
     const notificationBtn = document.querySelector('.notification-btn');
     const notificationPopup = document.getElementById('notificationPopup');
     const notificationOverlay = document.getElementById('notificationOverlay');
