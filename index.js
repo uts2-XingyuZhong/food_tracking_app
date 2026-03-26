@@ -383,6 +383,12 @@ app.get("/saved-recipes", async (req, res) => {
   }
 });
 
+app.get("/profile", (req, res) => {
+  res.render("profile.ejs", {
+    expiringIngredients: []
+  });
+});
+
 app.listen(port, "0.0.0.0", () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

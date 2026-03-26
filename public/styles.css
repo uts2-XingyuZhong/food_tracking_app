@@ -762,3 +762,117 @@ body {
   font-size: 14px;
 }
 
+/* Profile Page Styles */
+.profile-section {
+  margin-bottom: 28px;
+}
+
+.profile-section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  color: #123b40;
+}
+
+.account-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.account-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.account-label {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #3c5558;
+  font-weight: 600;
+}
+
+.account-value {
+  font-size: 20px;
+  color: #123b40;
+  margin: 0;
+  font-family: 'Playfair Display', serif;
+}
+
+.change-password-btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  background-color: #a9e4f4;
+  color: #123b40;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.change-password-btn:active {
+  opacity: 0.9;
+}
+
+.profile-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 24px;
+}
+
+.profile-menu-item {
+  padding: 16px 0;
+  border-bottom: 1px solid #d3e6e8;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #123b40;
+  transition: background-color 0.2s ease;
+}
+
+.profile-menu-item:last-child {
+  border-bottom: none;
+}
+
+.profile-menu-item:active {
+  background-color: #f0f0f0;
+}
+
+.menu-text {
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #123b40;
+}
+
+.logout-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.logout-btn {
+  padding: 12px 32px;
+  border-radius: 8px;
+  border: none;
+  background-color: #e8a8a3;
+  color: #ffffff;
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.logout-btn:active {
+  opacity: 0.9;
+}
+
