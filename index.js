@@ -351,6 +351,12 @@ app.post("/confirm",async(req,res)=>{
   res.redirect("/");
 })
 
+app.get("/search",(req,res)=>{
+  res.render("search.ejs",{
+    expiringIngredients: []
+  });
+});
+
 app.listen(port, "0.0.0.0", () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

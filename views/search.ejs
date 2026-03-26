@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pantry Pal</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Nunito:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <style>
+    .search-section {
+      max-width: 400px;
+      margin: 2rem auto;
+      padding: 1.5rem;
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-section h2 {
+      font-family: "Playfair Display", serif;
+      color: #123b40;
+      margin-bottom: 1rem;
+    }
+
+    .search-form {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: 2px solid #0b6168;
+      border-radius: 8px;
+      font-size: 1rem;
+      min-width: 0; 
+    }
+
+    .search-button {
+      background-color: #0b6168;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0.75rem 1rem; /* 横を小さく */
+      white-space: nowrap;
+    }
+
+    .search-button:hover {
+      background-color: #094a52;
+    }
+  </style>
+  <body>
+    <div class="app-frame">
+      <%- include("header.ejs")%>
+
+      <main class="content">
+        <section class="search-section">
+          <h2>Search Recipes</h2>
+          <form class="search-form">
+            <input
+              type="text"
+              name="query"
+              placeholder="Search for recipes..."
+              class="search-input"
+              required
+            />
+            <button type="submit" class="search-button">Search</button>
+          </form>
+        </section>
+      </main>
+    <%- include("bottom_icons.ejs")%>
+    </div>
+
+  </body>
+</html>
