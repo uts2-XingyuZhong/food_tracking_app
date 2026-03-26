@@ -10,9 +10,22 @@
       rel="stylesheet"
     />
   </head>
+  <style>
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 16px;
+    margin-top:15px;
+    margin-left: 15px;
+  }
+  </style>
   <body>
     <div class="app-frame">
       <%- include("header.ejs")%>
+
+      <h1 class="page-title">Saved Recipes</h1>
 
       <main class="content">
         <section class="recipes-list">
