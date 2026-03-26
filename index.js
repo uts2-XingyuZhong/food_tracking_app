@@ -357,6 +357,32 @@ app.get("/search",(req,res)=>{
   });
 });
 
+app.get("/saved-recipes", async (req, res) => {
+  try {
+    const response = await axios.get("https://api.spoonacular.com/recipes/random", {
+      params: {
+        apiKey: process.env.SPOONACULAR_API_KEY,
+        includeNutrition: false,
+        number: 5,
+      },
+    });
+
+    const recipes = response.data.recipes || [];
+    const savedRecipes = recipes.map((r) => ({
+      title: r.title,
+      image: r.image,
+    }));
+
+    res.render("saved_recipes.ejs", {
+      savedRecipes,
+      expiringIngredients: [],
+    });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Error fetching recipes");
+  }
+});
+
 app.listen(port, "0.0.0.0", () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
